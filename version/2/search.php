@@ -1,0 +1,295 @@
+<?php
+require_once('config.php');
+require_once('visit.php');
+?>
+<!--
+xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+xx                                  xx
+xx          xxx  xxx           xxx  xx
+xx          xxx  xxx           xxx  xx
+xx          xxx  xxx           xxx  xx
+xx  xxx     xxx  xxx    xxx    xxx  xx
+xx  xxx     xxx  xxx   xxxxx   xxx  xx
+xx  xxxxxxxxxx    xxxxxx   xxxxxx   xx
+xx     xxxx        xxxx     xxxx    xx
+xx                                  xx
+xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+-->
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN""http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html>
+<head>
+<title>JaWeb</title>
+
+	<meta name="description" content="JaWeb Online Free Web Tutorials" />
+	
+	<meta name="keywords" content="Juvar Abrera, Juvar, Abrera, JaWeb, Free, Online, Web, Tutorials, Lessons, HTML, CSS, CSS3, Javascript, jQuery, PHP, mySQL, Turbo C, Photoshop" />
+	
+	<meta name="author" content="Juvar Abrera" />
+	
+	<meta name="copyright" content="2012 Copyright Juvar Abrera" />
+	
+	<meta http-equiv="content-type" content="text/html;charset=UTF-8" />
+	
+	<?php /* <!--[if IE]><link rel="stylesheet" type="text/css" media="all" href="http://www.jaweb.comze.com/version/2/styles/default/ie.css"><![endif]--> */ ?>
+	
+	<link rel="stylesheet" type="text/css" href="http://www.jaweb.comze.com/version/2/styles/default/style.css">
+	
+</head>
+<body>
+<input type="hidden" value="<?php $randas = substr(str_shuffle(str_repeat('_ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789',10000)),0,10000); echo $randas; ?>" name="h">
+<div id="body_con">
+	<div id="con_content">
+		<div id="left_sb">
+			<div id="content_pad">
+				<div id="navigation">
+					<div id="nav">
+						<span class="nav_title">Navigation<img src="images/skin/default/bg/mini_icon.png" class="mini_icon_r"></span><hr class="dashed_lg">
+						<a href="http://www.jaweb.comze.com/version/2/index.php"><div id="nav_op"><div id="nav_op_p">Home</div></div></a>
+						<a href="http://www.jaweb.comze.com/version/2/about.php"><div id="nav_op"><div id="nav_op_p">About</div></div></a>
+						<a href="http://www.jaweb.comze.com/version/2/tutorials.php"><div id="nav_op"><div id="nav_op_p">Tutorials</div></div></a>
+						<a href="http://www.jaweb.comze.com/version/2/contact.php"><div id="nav_op"><div id="nav_op_p">Contact</div></div></a>
+					</div>
+					<div id="nav">
+						<span class="nav_title">More<img src="images/skin/default/bg/mini_icon.png" class="mini_icon_r"></span><hr class="dashed_lg">
+						<a href="http://www.jaweb.comze.com/version/2/downloads.php"><div id="nav_op"><div id="nav_op_p">Downloads</div></div></a>
+						<a href="http://www.jaweb.comze.com/version/2/webdeveloper/"><div id="nav_op"><div id="nav_op_p">The Web Developer</div></div></a>
+						<a href="http://www.jfx-design.comoj.com/"><div id="nav_op"><div id="nav_op_p">Jfx-Design</div></div></a>
+					</div>
+					<div id="nav">
+						<span class="nav_title">Recent Tutorials<img src="images/skin/default/bg/mini_icon.png" class="mini_icon_r"></span><hr class="dashed_lg">
+						<?php
+						$query = mysql_query("SELECT * FROM tutorials ORDER BY id DESC LIMIT 5");
+						$ab = 0;
+						while ($row=mysql_fetch_array($query)) {
+							$id = $row['id'];
+							$title = $row['title'];
+							if(strlen($title) > 35) {
+								$title2 = substr($title,0,35);
+								$title2 = $title2.'...';
+							} else {
+								$title2 = $title;
+							}
+							$message = $row['message'];
+							$message = substr($message,0,55);
+							$category = $row['category'];
+							$video = $row['video'];
+							$link_category = strtolower($category);
+							$h = substr(str_shuffle(str_repeat('ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789',15)),0,15);
+							$sql = mysql_query("SELECT * FROM hash WHERE tutid='$id'");
+							if(mysql_num_rows($sql) == 0) {
+								$views = 'No views';
+							} else {
+								$views = mysql_num_rows($sql).' views';
+							}
+							echo '<a href="http://www.jaweb.comze.com/version/2/watch.php?category='.$link_category.'&id='.$id.'&h='.$h.'" alt="'.$title.'" title="'.$title.'"><div id="nav_op"><div id="nav_op_p" style="padding:7px 15px 2px 5px;"><div class="side_video"><img src="http://img.youtube.com/vi/'.$video.'/1.jpg" id="vid_thumb">'.$title2.' <hr class="dashed_lg"><span class="views">'.$views.'</span></div></div></div></a>
+							';
+							$ab = 1;
+						}
+						if($ab==0) {
+							echo '<a href="#"><div id="nav_op"><div id="nav_op_p">There are no tutorials posted.</div></div></a>
+							';
+						}
+						?>
+					</div>
+					<div id="nav">
+						<span class="nav_title">Designer's Quotes<img src="images/skin/default/bg/mini_icon.png" class="mini_icon_r"></span><hr class="dashed_lg">
+						<?php
+						$query_g = mysql_query("SELECT * FROM webquotes ORDER BY RAND() LIMIT 1");
+						while($row = mysql_fetch_array($query_g)) {
+							$randwebquote = $row['quote'];
+							$randwebdesigner = $row['quoted_by'];
+							echo '
+						<span style="padding-right:15px;width:100%;display:block;"><em><q>'.$randwebquote.'</q><br><br>- '.$randwebdesigner.'</em></span>
+						';
+						}
+						?>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div id="center">
+			<div id="content_pad">
+				<div id="cover_photo">
+					<div id="total_tut">
+					<?php
+					$query = mysql_query("SELECT * FROM tutorials");
+					$total_tuts = mysql_num_rows($query);
+					?>
+					Total of <a href="http://www.jaweb.comze.com/version/2/tutorials.php"><?php echo $total_tuts; ?></a> tutorials
+					</div>
+				</div>
+				<div id="center_base">
+					<div id="left_align_it">
+					<span class="title"><img src="images/skin/default/bg/mini_icon.png" class="mini_icon_l">Search Results</span><hr class="dashed_lg">
+					<?php
+					if (isset($_GET['q'])) {
+						$q = $_GET['q'];
+						if(!$q) {
+							echo '
+					<p><center><form action="search.php" method="get"><table>
+						<tr><td><span class="error">Please enter a query!</span></td></tr>
+						<tr><td><input type="text" name="q" placeholder="Search Tutorials" class="text_default"></td></tr>
+						<tr><td><input type="submit" value="Search" class="submit_default" style="width:250px"></td></tr>
+					</table></form></center></p>
+					';
+						} else {
+							if (isset($_GET["page"])) {
+								$page = $_GET["page"];
+							} else {
+								$page=1;
+							}; 
+							$limit = 10;
+							$start_from = ($page-1) * $limit; 
+							$sqlr = mysql_query("SELECT * FROM tutorials WHERE title LIKE '%".$q."%'"); 
+							$sql = mysql_query("SELECT * FROM tutorials WHERE title LIKE '%".$q."%' ORDER BY date DESC LIMIT $start_from, $limit"); 
+							$n=0;
+							if($sql) {
+								if(mysql_num_rows($sql) == 0) {
+									echo '
+					<p><center><form action="search.php" method="get"><table>
+						<tr><td><span class="error">Search again.</span></td></tr>
+						<tr><td><input type="text" name="q" placeholder="Search Tutorials" class="text_default"></td></tr>
+						<tr><td><input type="submit" value="Search" class="submit_default" style="width:250px"></td></tr>
+					</table></form></center></p>
+					<p>No results found for <b>"'.$q.'".</b></p>
+					';
+								} else {
+									$numberofresults = mysql_num_rows($sqlr);
+									echo '
+					<p><center><form action="search.php" method="get"><table>
+						<tr><td><span class="message">'.$numberofresults.' results</span></td></tr>
+						<tr><td><input type="text" name="q" placeholder="Search Tutorials" class="text_default"></td></tr>
+						<tr><td><input type="submit" value="Search" class="submit_default" style="width:250px"></td></tr>
+					</table></form></center></p><hr class="dashed_lg">
+					';
+									while($row=mysql_fetch_array($sql)) {
+										$id = $row['id'];
+										$category = $row['category'];
+										$title = $row['title'];
+										$message = $row['message'];
+										$video_a = $row['video'];
+										$query2 = mysql_query("SELECT * FROM hash WHERE tutid='$id'");
+										if(mysql_num_rows($query2) == 0) {
+											$views = 'No views';
+										} else {
+											$views = mysql_num_rows($query2).' views';
+										}
+										$h = substr(str_shuffle(str_repeat('ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789',25)),0,25);
+										$link_category = strtolower($category);
+										echo '
+							<a href="http://www.jaweb.comze.com/version/2/watch.php?category='.$link_category.'&id='.$id.'&h='.$h.'" class="uni_options">
+								<div id="uni_options">
+								<img src="http://img.youtube.com/vi/'.$video_a.'/1.jpg"><table style="border:0px solid transparent;float:left;font-size:13px;width:80%"><tr><td><b>'.$title.'</b></td><td align="right">'.$views.'</td></tr></table>
+								</div>
+							</a>';
+										$n = 1;
+									}
+									$top = mysql_query("SELECT COUNT(id) FROM tutorials WHERE title LIKE '%".$q."%'"); 
+									$top_row = mysql_fetch_row($top); 
+									$total_records = $top_row[0]; 
+									$total_pages = ceil($total_records / $limit);
+									if($page == 1) {
+										$next_page_num = $page + 1;
+										$prev_page = '';
+										if($total_pages > 10) {
+											$next_page = '<a href="search.php?q='.$q.'&page='.$next_page_num.'" class="pagination">Next</a> ';
+										}
+									} elseif ($page == $total_pages) {
+										$prev_page_num = $page - 1;
+										$prev_page = '<a href="search.php?q='.$q.'&page='.$prev_page_num.'" class="pagination">Prev</a> ';
+										$next_page = ''; 
+									} else {
+										$next_page_num = $page + 1;
+										$prev_page_num = $page - 1;
+										$prev_page = '<a href="search.php?q='.$q.'&page='.$prev_page_num.'" class="pagination">Prev</a> ';
+										$next_page = '<a href="search.php?q='.$q.'&page='.$next_page_num.'" class="pagination">Next</a> '; 
+									}
+									if ($n == 0) {
+										header("Location: http://www.jaweb.comze.com/errors/error404.php");
+									} else {
+										echo '<center><b><span class="desc">Pages ('.$limit.' results per page)</span></b><br><br>'.$prev_page;
+										for ($i=1; $i<=$total_pages; $i++) { 
+											if($i==$page) {
+												echo '<a href="search.php?q='.$q.'&page='.$i.'" class="pagination" style="background:#aa1616;color:#1c1c1c;">'.$i.'</a> '; 
+											} else {
+												echo '<a href="search.php?q='.$q.'&page='.$i.'" class="pagination">'.$i.'</a> '; 
+											}
+										} 
+										echo $next_page.'</center>';
+									}
+								}
+							}
+						}
+					} else {
+						echo '
+					<p><center><form action="search.php" method="get"><table>
+						<tr><td><span class="error">Please enter a query!</span></td></tr>
+						<tr><td><input type="text" name="q" placeholder="Search Tutorials" class="text_default"></td></tr>
+						<tr><td><input type="submit" value="Search" class="submit_default" style="width:250px"></td></tr>
+					</table></form></center></p>
+					';
+					}
+					?><br>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div id="con_footer">
+			<div id="footer_bg">
+				<div id="footer_content">
+				JaWeb &copy; 2012 | <a href="http://www.jaweb.comze.com/version/2/index.php">Home</a> | 
+				<a href="http://www.jaweb.comze.com/version/2/tutorials.php">Tutorials</a> | 
+				<a href="http://www.jaweb.comze.com/version/2/privacy.php">Privacy Policy</a> | 
+				<a href="http://www.jaweb.comze.com/version/2/about.php">About This Website</a> | 
+				<a href="http://www.jaweb.comze.com/version/2/webdeveloper/">Web Developer</a> |
+				<a href="http://www.jaweb.comze.com/version/2/web_log.php">Web Log</a>
+				</div>
+				<div id="footer_webdev">
+				
+				</div>
+				<div id="footer_subs">
+				<span class="title">Subscribe</span><hr class="dashed_lg">
+				Subscribe in my website if you want to receive updates from us!<br><br>
+				<form action="http://www.jaweb.comze.com/version/2/subscribe.php" method="post">
+					<input type="text" class="text_default" name="subscribe_email" placeholder="example@domain.com">
+					<input type="submit" class="submit_default" value="Subscribe">
+				</form>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div id="nav_top">
+		<div id="top_base">
+			<div id="top_logo_base">
+				<a href="http://www.jaweb.comze.com/version/2/index.php"><div id="top_logo">
+				
+				</div></a>
+			</div>
+			<div id="top_search">
+				<form action="http://www.jaweb.comze.com/version/2/search.php" method="get">
+				<input type="text" class="search_top" name="q" placeholder="Search Tutorials...">
+				</form>
+			</div>
+		</div>
+	</div>
+	<div id="feedback">
+		<div id="feedbackForm">
+		<p>Do you like the new design?</p>
+		<form action="http://www.jaweb.comze.com/version/2/feedback_process.php" method="post">
+		<input type="radio" name="like" value="Like">Like<br>
+		<input type="radio" name="like" value="Dislike">Dislike
+		<p>Comments <i>(max. of 150 characters)</i></p>
+		<textarea class="text_default" name="comments" style="min-height:75px;max-height:75px;" maxlength="150" placeholder="Comments..."></textarea><br><br>
+		<input type="submit" style="margin-left:0px;width:250px;" class="submit_default" value="Send">
+		</form>
+		</div>
+		<div id="fbText">
+		Send Feedback
+		</div>
+	</div>
+</div>
+</body>
+</html>
